@@ -89,7 +89,7 @@ configure_nvidia_installation_dirs() {
   #/usr/sbin/lsof | grep '/usr/bin'
   #/usr/sbin/lsof
   #trap "{ echo trapped ; umount /lib/modules/\"$(uname -r)\"/video ; echo 1 ; umount /usr/lib/x86_64-linux-gnu ; lsof | grep '/usr/bin' ; umount -vvv --force /usr/bin; echo ended; }" EXIT
-  trap "{ echo trapped ; umount /lib/modules/\"$(uname -r)\"/video ; echo 1 ; umount /usr/lib/x86_64-linux-gnu ; echo 2 ; umount -vvv --force /usr/bin ; echo 3 ; }" EXIT
+  trap "{ echo trapped ; umount /lib/modules/\"$(uname -r)\"/video ; echo 1 ; umount /usr/lib/x86_64-linux-gnu ; echo 2 ; umount -v --force --lazy /usr/bin ; echo 3 ; }" EXIT
   popd
   echo "Configuring installation directories... DONE."
 }
