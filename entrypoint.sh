@@ -86,9 +86,10 @@ configure_nvidia_installation_dirs() {
   # Install an exit handler to cleanup the overlayfs mount points.
   mount
   yum install -y lsof
-  /usr/sbin/lsof | grep '/usr/bin'
+  #/usr/sbin/lsof | grep '/usr/bin'
   #/usr/sbin/lsof
-  trap "{ echo trapped ; umount /lib/modules/\"$(uname -r)\"/video; umount /usr/lib/x86_64-linux-gnu ; lsof | grep '/usr/bin' ; umount -vvv --force /usr/bin; echo ended; }" EXIT
+  #trap "{ echo trapped ; umount /lib/modules/\"$(uname -r)\"/video ; echo 1 ; umount /usr/lib/x86_64-linux-gnu ; lsof | grep '/usr/bin' ; umount -vvv --force /usr/bin; echo ended; }" EXIT
+  trap "{ echo trapped ; umount /lib/modules/\"$(uname -r)\"/video ; echo 1 ; umount /usr/lib/x86_64-linux-gnu ; echo 2 ; umount -vvv --force /usr/bin ; echo 3 ; }" EXIT
   popd
   echo "Configuring installation directories... DONE."
 }
