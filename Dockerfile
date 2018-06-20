@@ -23,10 +23,12 @@ FROM centos:7.5.1804
 RUN uname -r && \
     ls -l /usr/src/kernels && \
 #    yum install -y linux-headers-$(uname -r) && \
-    yum install -y kernel kernel-devel && \
+#    yum install -y kernel kernel-devel && \
+    yum install -y kernel-devel-$(uname -r) && \
+    ls -l /usr/src/kernels && \
 #    yum install -y linux-headers && \
     yum group install -y "Development Tools" && \
-    yum -y update && \
+#    yum -y update && \
     uname -r
 
 COPY entrypoint.sh /entrypoint.sh
