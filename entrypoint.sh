@@ -110,7 +110,7 @@ run_nvidia_installer() {
     --no-install-compat32-libs \
     --log-file-name="${NVIDIA_INSTALL_DIR_CONTAINER}/nvidia-installer.log" \
     --no-drm \
-    --silent \
+#    --silent \
     --accept-license
 #    --kernel-source-path=/lib/modules/$(uname -r)/build
   popd
