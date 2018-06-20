@@ -51,6 +51,7 @@ spec:
 #      - image: docker-registry-862752040.us-west-2.elb.amazonaws.com/centos-nvidia-driver-installer:latest
       - image: dtandersen/nvidia-driver-installer
         name: nvidia-driver-installer
+        imagePullPolicy: Always
         resources:
           requests:
             cpu: 0.15

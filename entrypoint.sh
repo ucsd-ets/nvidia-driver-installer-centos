@@ -88,7 +88,7 @@ configure_nvidia_installation_dirs() {
   yum install -y lsof
   /usr/sbin/lsof | grep '/usr/bin'
   #/usr/sbin/lsof
-  trap "{ echo trapped ; umount /lib/modules/\"$(uname -r)\"/video; umount /usr/lib/x86_64-linux-gnu ; lsof | grep '/usr/bin' ; umount /usr/bin; }" EXIT
+  trap "{ echo trapped ; umount /lib/modules/\"$(uname -r)\"/video; umount /usr/lib/x86_64-linux-gnu ; lsof | grep '/usr/bin' ; umount /usr/bin; echo ended; }" EXIT
   popd
   echo "Configuring installation directories... DONE."
 }
