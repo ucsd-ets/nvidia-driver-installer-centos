@@ -45,6 +45,8 @@ download_kernel_src() {
   yum install -y kernel-devel-$(uname -r)
   #yum install -y "kernel-devel-uname-r == $(uname -r)"
   echo kernel info
+  rpm -q kernel
+  rpm -q kernel-devel
   uname -r
   ls -l /usr/src/kernels
   #yum install -y kernel-devel
