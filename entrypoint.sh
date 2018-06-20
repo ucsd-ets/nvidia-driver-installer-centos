@@ -89,7 +89,7 @@ configure_nvidia_installation_dirs() {
   #/usr/sbin/lsof | grep '/usr/bin'
   #/usr/sbin/lsof
   #trap "{ echo trapped ; umount /lib/modules/\"$(uname -r)\"/video ; echo 1 ; umount /usr/lib/x86_64-linux-gnu ; lsof | grep '/usr/bin' ; umount -vvv --force /usr/bin; echo ended; }" EXIT
-  trap "{ echo trapped ; umount /lib/modules/\"$(uname -r)\"/video ; echo 1 ; umount /usr/lib/x86_64-linux-gnu ; echo 2 ; umount -v --force --lazy /usr/bin ; echo 3 ; }" EXIT
+  trap "{ echo trapped ; cat ${NVIDIA_INSTALL_DIR_CONTAINER}/nvidia-installer.log ; umount /lib/modules/\"$(uname -r)\"/video ; echo 1 ; umount /usr/lib/x86_64-linux-gnu ; echo 2 ; umount -v --force --lazy /usr/bin ; echo 3 ; }" EXIT
   popd
   echo "Configuring installation directories... DONE."
 }
@@ -111,7 +111,7 @@ run_nvidia_installer() {
     --no-install-compat32-libs \
     --log-file-name="${NVIDIA_INSTALL_DIR_CONTAINER}/nvidia-installer.log" \
     --no-drm \
-#    --silent \
+    --silent \
     --accept-license
 #    --kernel-source-path=/lib/modules/$(uname -r)/build
   popd
