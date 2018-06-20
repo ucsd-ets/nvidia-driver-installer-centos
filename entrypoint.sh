@@ -42,6 +42,7 @@ download_kernel_src() {
   echo "Downloading kernel sources..."
   #apt-get update && apt-get install -y linux-headers-$(uname -r)
   #yum update
+  yum install -y kernel-$(uname -r)
   yum install -y kernel-devel-$(uname -r)
   #yum install -y "kernel-devel-uname-r == $(uname -r)"
   echo kernel info
