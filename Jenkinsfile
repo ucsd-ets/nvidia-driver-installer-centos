@@ -1,5 +1,5 @@
-node {
-    agent { label 'docker' }
+node('docker') {
+//    agent { label 'docker' }
 
     def app
 
