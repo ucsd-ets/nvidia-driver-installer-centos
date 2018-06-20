@@ -20,11 +20,14 @@
 
 FROM centos:7.5.1804
 
+ENV KVER 3.10.0-862.3.2.el7.x86_64
+
 RUN uname -r && \
     ls -l /usr/src/kernels && \
 #    yum install -y linux-headers-$(uname -r) && \
 #    yum install -y kernel kernel-devel && \
-    yum install -y kernel-devel-$(uname -r) && \
+#    yum install -y kernel-devel-$(uname -r) && \
+    yum install -y kernel-devel-${KVER} && \
     ls -l /usr/src/kernels && \
 #    yum install -y linux-headers && \
     yum group install -y "Development Tools" && \
