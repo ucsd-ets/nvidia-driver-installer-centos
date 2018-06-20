@@ -47,7 +47,8 @@ spec:
         hostPath:
           path: /
       initContainers:
-      - image: gcr.io/google-containers/ubuntu-nvidia-driver-installer@sha256:7ffaf40fcf6bcc5bc87501b6be295a47ce74e1f7aac914a9f3e6c6fb8dd780a4
+#      - image: gcr.io/google-containers/ubuntu-nvidia-driver-installer@sha256:7ffaf40fcf6bcc5bc87501b6be295a47ce74e1f7aac914a9f3e6c6fb8dd780a4
+      - image: docker-registry-862752040.us-west-2.elb.amazonaws.com/centos-nvidia-driver-installer:latest
         name: nvidia-driver-installer
         resources:
           requests:
@@ -71,3 +72,5 @@ spec:
       containers:
       - image: "gcr.io/google-containers/pause:2.0"
         name: pause
+      imagePullSecrets:
+      - name: gpu-quota-webhook-pull-secret
