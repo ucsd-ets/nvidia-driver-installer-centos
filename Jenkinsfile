@@ -13,7 +13,8 @@ node('docker') {
         /* This builds the actual image; synonymous to
          * docker build on the command line */
 
-        app = docker.build("dtandersen/nvidia-driver-installer")
+        app = docker.build("ucsdets/nvidia-driver-installer")
+//        app = docker.build("dtandersen/nvidia-driver-installer")
 //#        app = docker.build("getintodevops/hellonode")
     }
 
