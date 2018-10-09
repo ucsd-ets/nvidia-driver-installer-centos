@@ -53,7 +53,7 @@ spec:
         hostPath:
           path: /
       initContainers:
-      - image: docker.io/ucsdets/nvidia-driver-installer
+      - image: ucsdets/nvidia-driver-installer
         name: nvidia-driver-installer
         imagePullPolicy: Always
         resources:
