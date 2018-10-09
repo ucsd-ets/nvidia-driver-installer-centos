@@ -133,12 +133,26 @@ verify_nvidia_installation() {
 
 update_host_ld_cache() {
   echo "Updating host's ld cache..."
-  echo "${NVIDIA_INSTALL_DIR_HOST}/lib64" >> "${ROOT_MOUNT_DIR}/etc/ld.so.conf"
+  grep -q "${NVIDIA_INSTALL_DIR_HOST}/lib64" "${ROOT_MOUNT_DIR}/etc/ld.so.conf" || \
+  	echo "${NVIDIA_INSTALL_DIR_HOST}/lib64" >> "${ROOT_MOUNT_DIR}/etc/ld.so.conf"
   ldconfig -r "${ROOT_MOUNT_DIR}"
   echo "Updating host's ld cache... DONE."
 }
 
+# Driver installation will fail if any nvidia* modules exist,
+# so attempt to remove (order must respect dependencies between them)
+# 'set -o errexit' above will cause this script to abort on any failure,
+# hence the if-construct rather than a boolean sequence
+check_module_status() {
+  for mod in nvidia_modeset nvidia_uvm nvidia_drm nvidia; do
+      if grep -q "^${mod}" /proc/modules; then
+	rmmod ${mod}
+      fi
+  done
+}
+
 main() {
+  check_module_status
   download_kernel_src
   configure_nvidia_installation_dirs
   download_nvidia_installer
