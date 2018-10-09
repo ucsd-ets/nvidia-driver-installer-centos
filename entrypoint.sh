@@ -23,6 +23,7 @@ NVIDIA_DRIVER_DOWNLOAD_URL_DEFAULT="https://us.download.nvidia.com/tesla/${NVIDI
 NVIDIA_DRIVER_DOWNLOAD_URL="${NVIDIA_DRIVER_DOWNLOAD_URL:-$NVIDIA_DRIVER_DOWNLOAD_URL_DEFAULT}"
 NVIDIA_INSTALL_DIR_HOST="${NVIDIA_INSTALL_DIR_HOST:-/var/lib/nvidia}"
 NVIDIA_INSTALL_DIR_CONTAINER="${NVIDIA_INSTALL_DIR_CONTAINER:-/usr/local/nvidia}"
+CLEAR_NVIDIA_INSTALL_DIR_CONTAINER="${CLEAR_NVIDIA_INSTALL_DIR_CONTAINER:-no}"
 NVIDIA_INSTALLER_RUNFILE="$(basename "${NVIDIA_DRIVER_DOWNLOAD_URL}")"
 ROOT_MOUNT_DIR="${ROOT_MOUNT_DIR:-/root}"
 set +x
@@ -40,23 +41,23 @@ update_container_ld_cache() {
 
 download_kernel_src() {
   echo "Downloading kernel sources..."
-  #apt-get update && apt-get install -y linux-headers-$(uname -r)
-  #yum update
   yum install -y kernel-$(uname -r)
   yum install -y kernel-devel-$(uname -r)
-  #yum install -y "kernel-devel-uname-r == $(uname -r)"
   echo kernel info
   rpm -q kernel
   rpm -q kernel-devel
   uname -r
   ls -l /usr/src/kernels
-  #yum install -y kernel-devel
   echo "Downloading kernel sources... DONE."
 }
 
 configure_nvidia_installation_dirs() {
   echo "Configuring installation directories..."
   mkdir -p "${NVIDIA_INSTALL_DIR_CONTAINER}"
+  if [ "${CLEAR_NVIDIA_INSTALL_DIR_CONTAINER}" = "yes" ]; then
+	echo "Removing existing contents from ${NVIDIA_INSTALL_DIR_CONTAINER}..."
+	find "${NVIDIA_INSTALL_DIR_CONTAINER}" -mindepth 1 -delete
+  fi
   pushd "${NVIDIA_INSTALL_DIR_CONTAINER}"
 
   # nvidia-installer does not provide an option to configure the
