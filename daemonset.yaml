@@ -12,16 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: nvidia-driver-installer
   namespace: kube-system
+  labels:
+    k8s-app: nvidia-driver-installer
 spec:
+  selector:
+    matchLabels:
+      k8s-app: nvidia-driver-installer
+  updateStrategy:
+    type: RollingUpdate
   template:
     metadata:
       labels:
         name: nvidia-driver-installer
+        k8s-app: nvidia-driver-installer
     spec:
       affinity:
         nodeAffinity:
@@ -34,11 +42,6 @@ spec:
       - key: "nvidia.com/gpu"
         effect: "NoSchedule"
         operator: "Exists"
-      - key: "scheduled_outage"
-        effect: "NoSchedule"
-        operator: "Exists"
-      hostNetwork: true
-      hostPID: true
       volumes:
       - name: dev
         hostPath:
@@ -46,41 +49,25 @@ spec:
       - name: nvidia-install-dir-host
         hostPath:
           path: /home/kubernetes/bin/nvidia
-      - name: nvidia-install-drivers-dir-host
-        hostPath:
-          path: /usr/lib/ITS-DRIVERS
       - name: root-mount
         hostPath:
           path: /
       initContainers:
-      - image: ucsdets/nvidia-driver-installer
+      - image: gcr.io/google-containers/centos-nvidia-driver-installer@sha256:to-be-build
         name: nvidia-driver-installer
-        imagePullPolicy: Always
         resources:
           requests:
             cpu: 0.15
         securityContext:
           privileged: true
         env:
-          - name: https_proxy
-            value: http://web.ucsd.edu:3128
-          - name: http_proxy
-            value: http://web.ucsd.edu:3128
-          # "current" is defined within our pupper config
-          - name: NVIDIA_DRIVER_DOWNLOAD_URL
-            value: "file:///usr/lib/ITS-DRIVERS/NVIDIA-Linux-x86_64-current.run"
           - name: NVIDIA_INSTALL_DIR_HOST
             value: /home/kubernetes/bin/nvidia
           - name: NVIDIA_INSTALL_DIR_CONTAINER
             value: /usr/local/nvidia
-          # clear out previous installation attempts
-          - name: CLEAR_NVIDIA_INSTALL_DIR_CONTAINER
-            value: "yes"
           - name: ROOT_MOUNT_DIR
             value: /root
         volumeMounts:
-        - name: nvidia-install-drivers-dir-host
-          mountPath: /usr/lib/ITS-DRIVERS
         - name: nvidia-install-dir-host
           mountPath: /usr/local/nvidia
         - name: dev
@@ -90,5 +77,3 @@ spec:
       containers:
       - image: "gcr.io/google-containers/pause:2.0"
         name: pause
-      imagePullSecrets:
-      - name: gpu-quota-webhook-pull-secret

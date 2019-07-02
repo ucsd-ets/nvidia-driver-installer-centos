@@ -12,15 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#FROM ubuntu:16.04
+FROM centos:7
+
+RUN yum update -y && \
+    yum install -y gcc make && \
+		yum clean all && \
+		rm -rf /var/cache/yum
 
 #RUN apt-get update && \
 #    apt-get install -y kmod gcc make curl && \
 #    rm -rf /var/lib/apt/lists/*
-
-FROM centos:7.5.1804
-
-RUN yum group install -y "Development Tools"
 
 COPY entrypoint.sh /entrypoint.sh
 

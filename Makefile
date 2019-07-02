@@ -14,7 +14,7 @@
 
 TAG?=latest
 REGISTRY?=gcr.io/google-containers
-IMAGE=ubuntu-nvidia-driver-installer
+IMAGE=centos-nvidia-driver-installer
 
 container:
 	docker build --pull -t ${REGISTRY}/${IMAGE}:${TAG} .
