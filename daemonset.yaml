@@ -53,7 +53,7 @@ spec:
         hostPath:
           path: /
       initContainers:
-      - image: ucsdets/nvidia-driver-installer-centos:2019.4.2
+      - image: ucsdets/nvidia-driver-installer-centos:2019.4.3
         name: nvidia-driver-installer
         resources:
           requests:
