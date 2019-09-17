@@ -53,7 +53,7 @@ spec:
         hostPath:
           path: /
       initContainers:
-      - image: ucsdets/nvidia-driver-installer-centos:2019.4.1
+      - image: ucsdets/nvidia-driver-installer-centos:2019.4.2
         name: nvidia-driver-installer
         resources:
           requests:
@@ -67,6 +67,10 @@ spec:
             value: /usr/local/nvidia
           - name: ROOT_MOUNT_DIR
             value: /root
+          - name: http_proxy
+            value: web.ucsd.edu:3128
+          - name: https_proxy
+            value: web.ucsd.edu:3128
         volumeMounts:
         - name: nvidia-install-dir-host
           mountPath: /usr/local/nvidia
