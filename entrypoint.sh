@@ -68,6 +68,13 @@ update_container_ld_cache() {
 download_kernel_src() {
   echo "Downloading kernel sources..."
   # apt-get update && apt-get install -y linux-headers-${KERNEL_VERSION}
+  cat << EOF > /etc/yum.repos.d/ETS_CentOS7-updates.repo
+[ETS_CentOS7-updates]
+name=ETS_CentOS7-updates
+enabled=1
+baseurl=http://rockhopper.ucsd.edu/CentOS7-x86_64-updates/
+proxy=_none_
+EOF
   yum update -y && yum install -y kernel-devel-${KERNEL_VERSION}
   echo "Downloading kernel sources... DONE."
 }
